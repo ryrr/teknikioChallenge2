@@ -8,16 +8,16 @@ backend challenege for teknikio
 ## Tables
 
 ### cars 
-  #### columns (`id`,`vin`,`name`)
+  #### (`id`,`vin`,`name`)
 
 ### users 
-  #### columns (`id`,`username`,`password`) 
+  #### (`id`,`username`,`password`) 
 
 ### ownership 
-  #### columns (`id`,`user_id`,`car_id`)
+  #### (`id`,`user_id`,`car_id`)
 
 ### rentals 
-  #### columns (`id`,`user_id`,`car_id`)
+  #### (`id`,`user_id`,`car_id`)
 
 # Routes
 
@@ -27,24 +27,24 @@ The possible fields accepted are `username`,`password`,`carname`, and `VIN`
 
 The values in brackets indicate that the corresponding values are required to be set upon a `POST` request to that route
 
-user routes
+## user routes
 
-#### /register {`username`,`password`} ex.`username=ryrr password=hunter1`
+**/register** {`username`,`password`} ex.`username=ryrr password=hunter1`
 
-#### /login {`username`,`password`} ex.`username=ryrr password=hunter1`
+**/login** {`username`,`password`} ex.`username=ryrr password=hunter1`
 
-#### /add_car {`VIN`,`carname`} ex.`VIN=5YJSA1DG9DFP14705 carname=grease_lightning`
+**/add_car** {`VIN`,`carname`} ex.`VIN=5YJSA1DG9DFP14705 carname=grease_lightning`
 
-#### /rent_car {`username`(renter),`carname`}
+**/rent_car** {`username`(renter),`carname`} ex. `username=rivera_racing carname=grease_lightning`
 
-#### /return_car {`username`(renter),`carname`}
+**/return_car** {`carname`} ex. `carname=grease_lightning`
 
-#### /delete_account
+**/delete_account**
 
-#### /remove_car {`carname`}
+**/delete_car** {`carname`}
 
-admin routes
+## admin routes
 
-#### /remove_user {`username`}
+**/remove_user** {`username`}
 
-#### /remove_car {`username`,`carname`}
+**/remove_car** {`username`,`carname`}
