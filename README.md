@@ -22,7 +22,7 @@ values in parenthesis are the columns of the respective table
 
 ### ownership 
    (`id`,`user_id`,`VIN`)
-   must key by id because a car can have multiple owners
+   must key by id because a car can have multiple owners 
 
 ### rentals 
    (`VIN`,`user_id`)
@@ -158,7 +158,32 @@ requires {`VIN`} ex. `VIN=5YJSA1DG9DFP14705`
 - Express for routing because It seems like the most popular and lightweight way to route in Node
 - MySQL because it is easier to set up quickly and prototype with than postgrSQL (I'd use postgreSQL in production)
 - node-bcrypt to hash passwords for security purposes
-- mongo-sanitize to sanitize DB input
+- sanitize to sanitize DB input
+
+
+# Running 
+
+## Database Initialization
+
+In a secure app you obviously do not want to leak the structure of your db to the public!! This is just for convenience
+
+create the 4 tables with these queries
+
+-  CREATE TABLE users (id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, username VARCHAR(30) NOT NULL, password VARCHAR(70) NOT NULL, PRIMARY KEY (user_id));
+
+-  CREATE TABLE cars (VIN VARCHAR(17) NOT NULL, name VARCHAR(30) NOT NULL, PRIMARY KEY(VIN));
+
+-  CREATE TABLE rentals (VIN VARCHAR(17) NOT NULL, user_id INT(11) UNSIGNED NOT NULL, PRIMARY KEY(VIN));
+
+-  CREATE TABLE ownership (id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, VIN VARCHAR(17) NOT NULL, user_id INT(11) UNSIGNED NOT NULL, PRIMARY KEY(id));
+
+## Start the server
+- `git clone` the repository
+- navigate into it and run `npm install`
+- provide valid database credentials and specify port in the config.js file (`host`,`port`,`user`,`password`,`database`) `port`)
+- ex. db:{ host: "localhost", port:'3306', user: "root", password: "awesomepassword", database:'carshare'}, app{port:3000},
+- navigate into the src folder and run `node app.js`
+- Server should now be running and open to requests on the configured port 
 
 
 
