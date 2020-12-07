@@ -158,7 +158,19 @@ requires {`VIN`} ex. `VIN=5YJSA1DG9DFP14705`
 - Express for routing because It seems like the most popular and lightweight way to route in Node
 - MySQL because it is easier to set up quickly and prototype with than postgrSQL (I'd use postgreSQL in production)
 - node-bcrypt to hash passwords for security purposes
-- mongo-sanitize to sanitize DB input
+- sanitize to sanitize DB input
+
+
+# Running 
+
+## Database Initialization
+
+## Start the server
+- `git clone` the repository
+- navigate into it and run `npm install`
+- provide valid database credentials in the config.js file
+- navigate into the src folder and run `node app.js`
+- Server should now be running and open to requests on port `3000` (configurable in app.js)
 
 
 
