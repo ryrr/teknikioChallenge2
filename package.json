@@ -1,0 +1,26 @@
+{
+  "name": "teknikiochallenge2",
+  "version": "1.0.0",
+  "description": "API spec for a car sharing/rental app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryrr/teknikioChallenge2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryrr/teknikioChallenge2/issues"
+  },
+  "homepage": "https://github.com/ryrr/teknikioChallenge2#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5"
+  }
+}
