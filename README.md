@@ -47,63 +47,64 @@ Users are scoped to only be able to rent/delete/return cars that they own.  Howe
 
 requires {`username`,`password`} ex.`username=ryrr` `password=hunter1`
 
-Registers a new user and stores login information in the db. Password is hashed and salted before insertion
+- Registers a new user and stores login information in the db. 
+- Password is hashed and salted before insertion
 
 
 **/login** 
 
 requires {`username`,`password`} ex.`username=ryrr` `password=hunter1`
 
-Logs a user in and gives access to routes in the user's scope
+- Logs a user in and gives access to routes in the user's scope
 
 
 **/add_car** 
 
 requires {`VIN`,`carname`} ex.`VIN=5YJSA1DG9DFP14705` `carname=grease_lightning`
 
-Adds a new car to the requesting user's account. 
+- Adds a new car to the requesting user's account. 
 
 
 **/add_owner** 
 
 requires {`username`,`VIN`} ex.`username=ryrr` `VIN=5YJSA1DG9DFP14705`
 
-Adds ownership of a given car to the given user's account
+- Adds ownership of a given car to the given user's account
 
 
 **/remove_owner** 
 
 requires {`username`,`VIN`} ex.`username=ryrr` `VIN=5YJSA1DG9DFP14705`
 
-Revokes ownership of a car (owned by the requesting user) from a given user (that is not the requesting user)
+- Revokes ownership of a car (owned by the requesting user) from a given user (that is not the requesting user)
 
 
 **/rent_car** 
 
 requires {`username`(renter),`VIN`} ex. `username=rivera_racing` `VIN=5YJSA1DG9DFP14705`
 
-Assigns a rental of a given car (owned by the requesting user) to a different given user
+- Assigns a rental of a given car (owned by the requesting user) to a different given user
 
 
 **/return_car** 
 
 requires {`VIN`} ex. `VIN=5YJSA1DG9DFP14705`
 
-Removes rental status of a car being rented by the requesting user
+- Removes rental status of a car being rented by the requesting user
 
 
 **/delete_account**
 
-Deletes the account and associated cars if none of their cars are currently being rented. 
-Car is not deleted if owned by another user.
-All active rentals are returned
+- Deletes the account and associated cars if none of their cars are currently being rented. 
+- Car is not deleted if owned by another user.
+- All active rentals are returned
 
 
 **/remove_car** 
 
 requires {`VIN`} ex.  `VIN=5YJSA1DG9DFP14705`
 
-Removes a car (owned by the requesting user) from the system provided it is not being rented
+- Removes a car (owned by the requesting user) from the system provided it is not being rented
 
 
 ### admin routes
@@ -112,23 +113,23 @@ Removes a car (owned by the requesting user) from the system provided it is not 
 
 requires {`username`} ex. `username=rivera_racing`
 
-Deletes the account and associated cars of a user if none of their cars are currently being rented.
-Car is not deleted if jointly owned by another user.
-All the users rentals are returned
+- Deletes the account and associated cars of a user if none of their cars are currently being rented.
+- Car is not deleted if jointly owned by another user.
+- All the users rentals are returned
 
 
 **/remove_car** 
 
 requires {`VIN`} ex.  `VIN=5YJSA1DG9DFP14705`
 
-Removes a given car from the system provided it is not being rented
+- Removes a given car from the system provided it is not being rented
 
 
 **/return_car** 
 
 requires {`VIN`} ex. `VIN=5YJSA1DG9DFP14705`
 
-Forcefully removes rental status of a given car being rented by a particular user
+- Forcefully removes rental status of a given car being rented by a particular user
 
 
 # Considerations
@@ -152,5 +153,12 @@ Forcefully removes rental status of a given car being rented by a particular use
 
 
 # Technologies
+
+- Node.js as it is easy to build prototypes with and works relatively seamlessly across platforms
+- Express for routing because It seems like the most popular and lightweight way to route in Node
+- MySQL because it is easier to set up quickly and prototype with than postgrSQL (I'd use postgreSQL in production)
+- node-bcrypt to hash passwords for security purposes
+- mongo-sanitize to sanitize DB input
+
 
 
