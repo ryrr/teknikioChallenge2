@@ -21,8 +21,8 @@ values in parenthesis are the columns of the respective table
    password is hashed and salted (not plain-text)
 
 ### ownership 
-   (`user_id`,`VIN`)
-   must key by user_id because a car can have multiple owners 
+   (`id`,`user_id`,`VIN`)
+   must key by id because a car can have multiple owners 
 
 ### rentals 
    (`VIN`,`user_id`)
@@ -175,7 +175,7 @@ create the 4 tables with these queries
 
 -  CREATE TABLE rentals (VIN VARCHAR(17) NOT NULL, user_id INT(11) UNSIGNED NOT NULL, PRIMARY KEY(VIN));
 
--  CREATE TABLE ownership (VIN VARCHAR(17) NOT NULL, user_id INT(11) UNSIGNED NOT NULL, PRIMARY KEY(user_id));
+-  CREATE TABLE ownership (id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, VIN VARCHAR(17) NOT NULL, user_id INT(11) UNSIGNED NOT NULL, PRIMARY KEY(id));
 
 ## Start the server
 - `git clone` the repository
