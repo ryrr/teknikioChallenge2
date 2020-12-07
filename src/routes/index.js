@@ -25,50 +25,51 @@ router.post("/login", async(req,res)=>{
     else{res.send(`login failed!`)}
 })
 
-router.post("/add_car",(req,res)=>{
-    const vin = req.body['vin']
+router.post("/add_car", async(req,res)=>{
+    const vin = req.body['VIN']
     const carname = req.body['carname']
-    const result = db.addCar(vin,carname)
+    const result = await db.addCar(vin,carname)
+    console.log(result)
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
 
-router.post("/add_owner",(req,res)=>{
-    const vin = req.body['vin']
+router.post("/add_owner", async(req,res)=>{
+    const vin = req.body['VIN']
     const username = req.body['username']
-    const result = db.addOwner(vin,username)
+    const result = await db.addOwner(vin,username)
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
 
-router.post("/remove_owner",(req,res)=>{
-    const vin = req.body['vin']
+router.post("/remove_owner", async(req,res)=>{
+    const vin = req.body['VIN']
     const username = req.body['username']
-    const result = db.removeOwner(vin,username)
+    const result = await db.removeOwner(vin,username)
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
 
-router.post("/rent_car",(req,res)=>{
-    const vin = req.body['vin']
+router.post("/rent_car", async(req,res)=>{
+    const vin = req.body['VIN']
     const username = req.body['username']
-    const result = db.rentCar(vin,username)
+    const result = await db.rentCar(vin,username)
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
 
 //user-admin
 
-router.post("/remove_car",(req,res)=>{
-    const vin = req.body['vin']
-    const result = db.removeCar(vin)
+router.post("/remove_car", async(req,res)=>{
+    const vin = req.body['VIN']
+    const result = await db.removeCar(vin)
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
 
-router.post("/return_car",(req,res)=>{
-    const vin = req.body['vin']
-    const result = db.returnCar(vin)
+router.post("/return_car", async(req,res)=>{
+    const vin = req.body['VIN']
+    const result = await db.returnCar(vin)
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })

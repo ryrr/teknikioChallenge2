@@ -1,20 +1,15 @@
 var mysql = require('mysql2/promise');
 const util = require('../utility/util.js')
+const config = require('../../config.js')
 
-const connection =  mysql.createConnection({
-    host: "localhost",
-    port:'3306',
-    user: "root",
-    password: "3LongPenguins",
-    database:'carshare'
-});
+const connection =  mysql.createConnection(config.db);
 
 
 
 
 exports.register = async (username,hashedPass)=>{
     const db = await connection
-    const userExists = await getPassword(username)
+    const userExists = await getPassword(username,db)
     if(userExists){
         return {'error':true,'msg':`username: ${username} already exists try again!`}
     }
@@ -31,7 +26,7 @@ exports.register = async (username,hashedPass)=>{
 
 exports.login = async (username,password)=>{
     const db = await connection
-    const hash = await getPassword(username)
+    const hash = await getPassword(username,db)
     if(hash){
         let isVerified = await util.verifyPassword(password,hash)
         if(isVerified){return true}
@@ -44,7 +39,7 @@ exports.login = async (username,password)=>{
 
 exports.addCar = async (vin,carname)=>{
     const db = await connection
-    const vinExists = await getCar(vin)
+    const vinExists = await getCar(vin,db)
     if(vinExists){
         return {'error':true,'msg':`VIN: ${vin} is already registered`}
     }
@@ -61,9 +56,8 @@ exports.addCar = async (vin,carname)=>{
 
 exports.addOwner = async (vin, username)=>{
     const db = await connection
-    //GET USERID FROM USEREXISTS!!!!
-    const userExists = await getPassword(username)
-    if(!userExists){
+    const user_id = await getUserId(username,db)
+    if(!user_id){
         return {'error':true,'msg':`username: ${username} doesn't exist try again!`}
     }
     else{
@@ -79,16 +73,14 @@ exports.addOwner = async (vin, username)=>{
 
 exports.removeOwner = async (vin,username)=>{
     const db = await connection
-    //GET USERID FROM USEREXISTS!!!!
-    const userExists = await getPassword(username)
-    if(!userExists){
+    const user_id = await getUserId(username,db)
+    if(!user_id){
         return {'error':true,'msg':`username: ${username} doesn't exist try again!`}
     }
     else{
         try{
-            //change query to delete!!!!!!!!!!!!
-            const [rows] = await db.execute(`INSERT INTO ownership (VIN,user_id)VALUES('${vin}','${user_id}');`)
-            return {'error':false,'msg':`${username} is now an owner of car with VIN ${vin}!`}
+            const [rows] = await db.execute(`DELETE from ownership WHERE user_id='${user_id}' and VIN='${vin}'`)
+            return {'error':false,'msg':`${username} is no longer an owner of car with VIN ${vin}!`}
         }catch(e){
             console.log(e)
             return {'error':true,'msg':e}
@@ -98,12 +90,12 @@ exports.removeOwner = async (vin,username)=>{
 
 exports.rentCar = async (vin,username)=>{
     const db = await connection
-    const vinExists = await getCar(vin)
-    const userExists = await getPassword(username)
+    const vinExists = await getCar(vin,db)
+    const user_id = await getUserId(username,db)
     if(!vinExists){
         return {'error':true,'msg':`VIN: ${vin} is not registered in the system`}
     }
-    else if(!userExists){
+    else if(!user_id){
         return {'error':true,'msg':`USER: ${username} does not exist!`}
     }
     else{
@@ -120,16 +112,14 @@ exports.rentCar = async (vin,username)=>{
 
 exports.returnCar = async (vin)=>{
     const db = await connection
-    //GET USERID FROM USEREXISTS!!!!
     const vinExists = await getCar(vin)
     if(!vinExists){
         return {'error':true,'msg':`VIN: ${vin} doesn't exist try again!`}
     }
     else{
         try{
-            //change query to delete!!!!!!!!!!!!
-            const [rows] = await db.execute(`INSERT INTO ownership (VIN,user_id)VALUES('${vin}','${user_id}');`)
-            return {'error':false,'msg':`${username} is now an owner of car with VIN ${vin}!`}
+            const [rows] = await db.execute(`DELETE from rentals WHERE VIN='${vin}'`)
+            return {'error':false,'msg':`You successfully returned car with VIN: ${vin}!`}
         }catch(e){
             console.log(e)
             return {'error':true,'msg':e}
@@ -147,14 +137,23 @@ exports.removeCar = async (vin)=>{
 
 }
 
-getPassword = async (username)=>{
-    const db = await connection
+getPassword = async (username,connection)=>{
+    const db = connection
     const [rows] = await db.execute(`SELECT * FROM users WHERE username='${username}'`)
     if(rows[0]){ return rows[0]['password']}
     else{return false}
 }
 
-getCar = async (vin)=>{
-
+getCar = async (vin,connection)=>{
+    const db = connection
+    const [rows] = await db.execute(`SELECT * FROM cars WHERE VIN='${vin}'`)
+    if(rows[0]){ return rows[0]['name']}
+    else{return false}
 }
 
+getUserId = async(username,connection)=>{
+    const db = connection
+    const [rows] = await db.execute(`SELECT * FROM users WHERE username='${username}'`)
+    if(rows[0]){ return rows[0]['id']}
+    else{return false}
+}
