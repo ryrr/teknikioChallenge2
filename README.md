@@ -22,7 +22,7 @@ values in parenthesis are the columns of the respective table
 
 ### ownership 
    (`id`,`user_id`,`VIN`)
-   must key by id because a car can have multiple owners 
+   must key by id because a user can have own multiple cars 
 
 ### rentals 
    (`VIN`,`user_id`)
