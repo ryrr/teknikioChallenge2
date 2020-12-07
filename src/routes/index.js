@@ -13,23 +13,30 @@ router.post("/register", async(req,res)=>{
     const password = req.body['password']
     const hashedPassword = await util.hashPassword(password)
     const result = await db.register(username,hashedPassword)
+
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
+
 
 router.post("/login", async(req,res)=>{
     const username = req.body['username']
     const password = req.body['password']
     const successfulLogin = await db.login(username,password)
-    if(successfulLogin){res.send(`${username} logged in!`)}
+    if(successfulLogin){
+        req.session.username = username
+        res.send(`${username} logged in!`)
+    }
     else{res.send(`login failed!`)}
 })
 
+//ensure carname is set
 router.post("/add_car", async(req,res)=>{
     const vin = req.body['VIN']
     const carname = req.body['carname']
-    const result = await db.addCar(vin,carname)
-    console.log(result)
+    const requestingUser = req.session.username
+    const result = await db.addCar(vin,carname,requestingUser)
+
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
@@ -37,7 +44,9 @@ router.post("/add_car", async(req,res)=>{
 router.post("/add_owner", async(req,res)=>{
     const vin = req.body['VIN']
     const username = req.body['username']
-    const result = await db.addOwner(vin,username)
+    const requestingUser = req.session.username
+    const result = await db.addOwner(vin,username,requestingUser)
+
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
@@ -45,7 +54,9 @@ router.post("/add_owner", async(req,res)=>{
 router.post("/remove_owner", async(req,res)=>{
     const vin = req.body['VIN']
     const username = req.body['username']
-    const result = await db.removeOwner(vin,username)
+    const requestingUser = req.session.username
+    const result = await db.removeOwner(vin,username,requestingUser)
+
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
@@ -53,16 +64,9 @@ router.post("/remove_owner", async(req,res)=>{
 router.post("/rent_car", async(req,res)=>{
     const vin = req.body['VIN']
     const username = req.body['username']
-    const result = await db.rentCar(vin,username)
-    if(!result['error']){res.send(result['msg'])}
-    else{res.send(result['msg'])}
-})
+    const requestingUser = req.session.username
+    const result = await db.rentCar(vin,username,requestingUser)
 
-//user-admin
-
-router.post("/remove_car", async(req,res)=>{
-    const vin = req.body['VIN']
-    const result = await db.removeCar(vin)
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
@@ -70,19 +74,28 @@ router.post("/remove_car", async(req,res)=>{
 router.post("/return_car", async(req,res)=>{
     const vin = req.body['VIN']
     const result = await db.returnCar(vin)
+
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
 
-
-//admin
+//not implemented yet
 
 router.get("/remove_user",(req,res)=>{
     const username = req.body['username']
     const result = db.removeUser(vin)
+
     if(!result['error']){res.send(result['msg'])}
     else{res.send(result['msg'])}
 })
 
+router.post("/remove_car", async(req,res)=>{
+    const vin = req.body['VIN']
+    const requestingUser = req.session.username
+    const result = await db.removeCar(vin)
+    
+    if(!result['error']){res.send(result['msg'])}
+    else{res.send(result['msg'])}
+})
 
 module.exports = router
