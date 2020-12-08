@@ -180,8 +180,8 @@ create the 4 tables with these queries
 ## Start the server
 - `git clone` the repository
 - navigate into it and run `npm install`
-- provide valid database credentials and specify port in the config.js file (`host`,`port`,`user`,`password`,`database`) `port`)
-- ex. db:{ host: "localhost", port:'3306', user: "root", password: "awesomepassword", database:'carshare'}, app{port:3000},
+- provide valid database credentials and specify port in the config.js file (`host`,`port`,`user`,`password`,`database`,`sessionSecret`))
+- ex. db:{ host: "localhost", port:'3306', user: "root", password: "awesomepassword", database:'carshare'}, app{port:3000},sessionSecret:{secret:'shhhhhhh'}
 - navigate into the src folder and run `node app.js`
 - Server should now be running and open to requests on the configured port 
 
