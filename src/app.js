@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 app.use(cookieParser());
-app.use(session({secret: "Shh, its a secret!", resave: true, saveUninitialized: true}));
+app.use(session({secret: config.sessionSecret.secret, resave: true, saveUninitialized: true}));
 
 app.use("/",routes)
 
